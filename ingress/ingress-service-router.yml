@@ -1,0 +1,49 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: ingress-service-router
+spec:
+  routes:
+    - match:
+        http:
+          pathPrefix: '/first-propagator'
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        service: first-propagator
+        serviceSubset: sl1
+    - match:
+        http:
+          pathPrefix: '/first-propagator'
+      destination:
+        service: first-propagator
+    - match:
+        http:
+          pathPrefix: '/second-propagator'
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        service: second-propagator
+        serviceSubset: sl1
+    - match:
+        http:
+          pathPrefix: '/second-propagator'
+      destination:
+        service: second-propagator
+    - match:
+        http:
+          pathPrefix: '/third-propagator'
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        service: third-propagator
+        serviceSubset: sl1
+    - match:
+        http:
+          pathPrefix: '/third-propagator'
+      destination:
+        service: third-propagator

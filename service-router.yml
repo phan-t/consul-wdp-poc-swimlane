@@ -1,0 +1,42 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: first-propagator
+spec:
+  routes:
+    - match:
+        http:
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        serviceSubset: sl1
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: second-propagator
+spec:
+  routes:
+    - match:
+        http:
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        serviceSubset: sl1
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: third-propagator
+spec:
+  routes:
+    - match:
+        http:
+          header:
+            - name: x-swimlane
+              exact: 'sl1'
+      destination:
+        serviceSubset: sl1

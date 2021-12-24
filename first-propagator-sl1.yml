@@ -1,0 +1,54 @@
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: first-propagator
+#spec:
+#  selector:
+#    app: first-propagator
+#  ports:
+#    - port: 80
+#      targetPort: 80
+#---
+#apiVersion: v1
+#kind: ServiceAccount
+#metadata:
+#  name: first-propagator
+#---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-propagator-sl1
+  labels:
+    app: first-propagator
+    swimlane: sl1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: first-propagator
+      swimlane: sl1
+  template:
+    metadata:
+      labels:
+        app: first-propagator
+        swimlane: sl1
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/service-tags: sl1
+        consul.hashicorp.com/service-meta-swimlane: sl1
+    spec:
+      containers:
+        - name: first-propagator
+          image: nicholasjackson/fake-service:v0.7.8
+          ports:
+            - containerPort: 80
+          env:
+            - name: 'LISTEN_ADDR'
+              value: '0.0.0.0:80'
+            - name: 'NAME'
+              value: 'first-propagator-sl1'
+            - name: 'MESSAGE'
+              value: 'first-propagator-sl1'
+            - name: 'ALLOWED_HEADERS'
+              value: 'x-swimlane'

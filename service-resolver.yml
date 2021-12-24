@@ -1,0 +1,41 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: first-propagator
+spec:
+  defaultSubset: default
+  subsets:
+    default:
+      filter: "Service.Meta.swimlane == default"
+    sl1:
+      filter: "Service.Meta.swimlane == sl1"
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: second-propagator
+spec:
+  defaultSubset: default
+  subsets:
+    default:
+      filter: "Service.Meta.swimlane == default"
+    sl1:
+      filter: "Service.Meta.swimlane == sl1"
+  failover:
+    sl1:
+      serviceSubset: default
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: third-propagator
+spec:
+  defaultSubset: default
+  subsets:
+    default:
+      filter: "Service.Meta.swimlane == default"
+    sl1:
+      filter: "Service.Meta.swimlane == sl1"
+  failover:
+    sl1:
+      serviceSubset: default
